@@ -28,7 +28,7 @@ def process_pdf2txt_ocr(file: bytes):
     return content
 
 
-def pdf2txt_ocr_RPseparate(file: bytes):
+def pdf2txt_ocr_rp_separate(file: bytes):
     ocr = CnOcr()
     content = ''
     page_list = []
@@ -67,19 +67,12 @@ def process_pdf2txt_pdfplumber(file: bytes):
 
 
 def process_pdf2txt_pdfminer(file: bytes):
-    content = ''
-    # 创建一个PDFResourceManager对象
     resource_manager = PDFResourceManager()
-    # 创建一个StringIO对象，用于存储提取的文本内容
     output = io.StringIO()
-    # 创建一个TextConverter对象
     converter = TextConverter(resource_manager, output, laparams=LAParams())
-    # 创建一个PDFPageInterpreter对象
     interpreter = PDFPageInterpreter(resource_manager, converter)
-    # 逐页解析文档
     for page in PDFPage.get_pages(io.BytesIO(file)):
         interpreter.process_page(page)
-    # 获取提取的文本内容
     content = output.getvalue()
     return content
 
@@ -87,10 +80,10 @@ def process_pdf2txt_pdfminer(file: bytes):
 if __name__ == '__main__':
     start_time = time.time()
     print('开始执行')
-    zhangyuge.processor_by_file(pdf2txt_ocr_RPseparate,
-                                src_path='',
+    zhangyuge.processor_by_file(process_pdf2txt_pdfminer,
+                                src_path='D:\Desktop\ice\code\python\zhangyuge\pdf\\',
                                 src_suffix='.pdf',
-                                dest_path='',
+                                dest_path='D:\Desktop\ice\code\python\zhangyuge\\txt\\',
                                 dest_suffix='.txt',
-                                processor_num=1)
+                                processor_num=20)
     print(time.time() - start_time)
